@@ -29,10 +29,14 @@ public class ConsumeBinanceRestApiApplication {
 	@Bean
 	public CommandLineRunner run(RestTemplate restTemplate) throws Exception{
 		return args -> {
-			Trade trade = restTemplate.getForObject(
+			ResponseEntity<Trade[]> response = restTemplate.getForEntity(
 					"https://api.binance.com/api/v3/trades?symbol=LTCBTC",
-					Trade.class);
-			log.info(trade.toString());
+					Trade[].class
+			);
+			Trade[] trades = response.getBody();
+			for (Trade trade: trades) {
+				log.info(trade.toString());
+			}
 		};
 	}
 
